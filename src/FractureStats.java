@@ -2,11 +2,11 @@ public class FractureStats {
 
     /* ---------- ENUMS ---------- */
 
-    enum Stat {
+    public static enum Stat {
         STR, DEX, END, VIT, INT, WIS, PER, RES
     }
 
-    enum Race {
+    public static enum Race {
         HUMAN,
         ELF,
         DWARF,
