@@ -1,12 +1,14 @@
+package utils;
+
 public class FractureStats {
 
     /* ---------- ENUMS ---------- */
 
-    public static enum Stat {
+    public enum Stat {
         STR, DEX, END, VIT, INT, WIS, PER, RES
     }
 
-    public static enum Race {
+    public enum Race {
         HUMAN,
         ELF,
         DWARF,
@@ -14,63 +16,39 @@ public class FractureStats {
         GNOME
     }
 
-    /* ---------- CORE DATA ---------- */
-
-    public static class Character {
-        int level;
-        Race race;
-        Map<Stat, Integer> stats = new EnumMap<>(Stat.class);
-
-        Character(int level, Race race) {
-            this.level = level;
-            this.race = race;
-            for (Stat s : Stat.values()) {
-                stats.put(s, 10);
-            }
-        }
-
-        void addStat(Stat stat, int value) {
-            stats.put(stat, stats.get(stat) + value);
-        }
-
-        int getStat(Stat stat) {
-            return stats.get(stat);
-        }
-    }
-
     /* ---------- RESOURCE CALCULATIONS ---------- */
 
-    static double maxHP(Character c) {
-        double base = 100 + (c.level * 10) + (c.getStat(Stat.END) * 5);
+    public static double maxHP(Character c) {
+        double base = ((c.level - 1) * 10) + (c.getStat(Stat.END) * 5);
         if (c.race == Race.DWARF) base *= 1.10;
         return base;
     }
 
-    static double maxMP(Character c) {
-        double base = 100 + (c.level * 10) + (c.getStat(Stat.INT) * 5);
+    public static double maxMP(Character c) {
+        double base = ((c.level - 1) * 10) + (c.getStat(Stat.INT) * 5);
         return base;
     }
 
-    static double maxSP(Character c) {
-        double base = 100 + (c.level * 10) + (c.getStat(Stat.END) * 5);
+    public static double maxSP(Character c) {
+        double base = ((c.level - 1) * 10) + (c.getStat(Stat.END) * 5);
         if (c.race == Race.ELF) base *= 1.10;
         return base;
     }
 
-    static double hpRegenPerSecond(Character c) {
+    public static double hpRegenPerSecond(Character c) {
         double regen = maxHP(c) * (0.001 * c.getStat(Stat.VIT));
         if (c.race == Race.DWARF) regen *= 1.10;
         return regen;
     }
 
-    static double mpRegenPerSecond(Character c) {
-        double regen = maxMP(c) * (0.0015 * c.getStat(Stat.WIS));
+    public static double mpRegenPerSecond(Character c) {
+        double regen = maxMP(c) * (0.001 * c.getStat(Stat.WIS));
         if (c.race == Race.DEMON) regen *= 1.10;
         return regen;
     }
 
-    static double spRegenPerSecond(Character c) {
-        double regen = maxSP(c) * (0.002 * c.getStat(Stat.VIT));
+    public static double spRegenPerSecond(Character c) {
+        double regen = maxSP(c) * (0.001 * c.getStat(Stat.VIT));
         if (c.race == Race.ELF || c.race == Race.DEMON) regen *= 1.10;
         return regen;
     }
